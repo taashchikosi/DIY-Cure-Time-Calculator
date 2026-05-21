@@ -179,6 +179,106 @@ const products: Prisma.ProductCreateInput[] = [
     amazon_asin: null,
     home_depot_sku: null,
   },
+
+  // ─── Gorilla Glue Original ────────────────────────────────────────────────
+  // TDS: Gorilla Glue Europe A/S Technical Data Sheet (rev. 2007-01-31)
+  // Source: confirmed from uploaded PDF
+  // Working temp. Wood 10–30°C (50–86°F) is the substrate/ambient range for
+  // application — the explicit TDS field used as min/max application temp.
+  // Full cure: "full bonding strength after 24 hours at 20°C" — explicit.
+  {
+    manufacturer: "Gorilla Glue",
+    product_name: "Gorilla Glue Original Polyurethane Adhesive",
+    category: "adhesive",
+    sub_category: "polyurethane",
+    slug: "gorilla-glue-original-polyurethane-adhesive",
+    open_time_min: 10,
+    clamp_time_min: 240, // 1–4 hours stated; conservative upper bound
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24),
+    humidity_behaviour: "positive",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 50, // 10°C working temp (wood)
+    max_application_temp_f: 86, // 30°C working temp (wood)
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.gorillaglue.com/wp-content/uploads/2016/07/Gorilla-Glue-TDS.pdf",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── DAP All Purpose RTV 100% Silicone ───────────────────────────────────
+  // TDS: DAP All Purpose RTV 100% Silicone (DAP Global Inc., dated 3/3/2019)
+  // Source: confirmed from uploaded PDF
+  {
+    manufacturer: "DAP",
+    product_name: "All Purpose RTV 100% Silicone Sealant",
+    category: "sealant",
+    sub_category: "silicone",
+    slug: "dap-all-purpose-rtv-100-silicone-sealant",
+    open_time_min: 10,       // Tooling time 5–10 min
+    clamp_time_min: null,
+    dry_to_touch_min: 20,    // Tack free 10–20 min
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24),
+    humidity_behaviour: "bell_curve",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: -4,  // Explicit Application Temperature Range
+    max_application_temp_f: 120,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: true,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.dap.com/media/all-purpose-rtv-100-silicone-tds.pdf",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Loctite Epoxy Quick Set ──────────────────────────────────────────────
+  // TDS: Loctite Epoxy Quick Set (Henkel US TDS, rev. 08/30/2016)
+  // Source: confirmed from uploaded PDF
+  // Hardener explicitly contains "amine curing agents" → amine_blush_risk TRUE.
+  {
+    manufacturer: "Loctite",
+    product_name: "Epoxy Quick Set",
+    category: "adhesive",
+    sub_category: "epoxy",
+    slug: "loctite-epoxy-quick-set",
+    open_time_min: 10,      // Gel time 4–10 min
+    clamp_time_min: 10,     // "Support bond for 10 minutes at room temperature"
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24), // Explicitly stated "Full Cure Time: 24 hours"
+    humidity_behaviour: "neutral",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 39, // Explicit: "Apply between 39°F (4°C) and 95°F (35°C)"
+    max_application_temp_f: 95,
+    mfft_celsius: null,
+    amine_blush_risk: true,
+    dew_point_warning: true,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.loctiteproducts.com/content/dam/loctite/en-US/documents/tds/tds-loctite-epoxy-quick-set.pdf",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
 ];
 
 async function main() {
