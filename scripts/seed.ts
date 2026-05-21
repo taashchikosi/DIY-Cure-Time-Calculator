@@ -345,6 +345,72 @@ const products: Prisma.ProductCreateInput[] = [
     home_depot_sku: null,
   },
 
+  // ─── DAP Kwik Seal Plus Kitchen & Bath Adhesive Sealant ──────────────────
+  // TDS: DAP Kwik Seal Plus Premium Kitchen & Bath Adhesive Sealant (DAP TDS, 7/25/2019)
+  // Source: confirmed from uploaded PDF
+  {
+    manufacturer: "DAP",
+    product_name: "Kwik Seal Plus Premium Kitchen & Bath Adhesive Sealant",
+    category: "sealant",
+    sub_category: "acrylic_latex",
+    slug: "dap-kwik-seal-plus-kitchen-bath-sealant",
+    open_time_min: 10,     // Tooling Time (Working Time): 10 minutes
+    clamp_time_min: null,
+    dry_to_touch_min: 15,  // Tack Free Time: 15 minutes
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(18), // Full Dry Through: 18 hours
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 40,  // Application Temperature Range: 40°F to 120°F
+    max_application_temp_f: 120,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.dap.com/en-us/products/kwik-seal-plus-premium-kitchen-bath-adhesive-caulk/",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Sakrete Maximizer Concrete Mix ──────────────────────────────────────
+  // TDS: Sakrete Maximizer Concrete Mix (Sakrete datasheet, Rev. 05/20)
+  // Source: confirmed from uploaded PDF
+  // structural_liability=true: explicitly listed for structural applications
+  // (foundation walls, footings, structural applications requiring concrete)
+  {
+    manufacturer: "Sakrete",
+    product_name: "Maximizer Concrete Mix",
+    category: "concrete",
+    sub_category: null,
+    slug: "sakrete-maximizer-concrete-mix",
+    open_time_min: null,
+    clamp_time_min: null,
+    dry_to_touch_min: 1440, // foot traffic at 24 hours per datasheet
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(672), // 28 days (5,500 psi compressive strength)
+    humidity_behaviour: "hydration",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 40, // Explicit: "between 40°F (4°C) and 90°F (32°C)"
+    max_application_temp_f: 90,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: true,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.sakrete.com/products/concrete-repair-mortar/maximizer-concrete-mix",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
   // ─── Loctite PL400 Subfloor & Deck Construction Adhesive ─────────────────
   // TDS: Loctite PL400 Subfloor Construction Adhesive (Henkel TDS, rev. 01/11/2022)
   // Source: confirmed from uploaded PDF
