@@ -377,6 +377,38 @@ const products: Prisma.ProductCreateInput[] = [
     home_depot_sku: null,
   },
 
+  // ─── GE All Purpose Silicone 1 Window & Door Sealant ─────────────────────
+  // TDS: GE All Purpose Silicone 1 Window & Door Sealant (Henkel/GE, Rev. May 1, 2023)
+  // Source: confirmed from uploaded PDF
+  {
+    manufacturer: "GE",
+    product_name: "All Purpose Silicone 1 Window & Door Sealant",
+    category: "sealant",
+    sub_category: "silicone",
+    slug: "ge-all-purpose-silicone-1-window-door",
+    open_time_min: 10,     // Tooling / Open Time: 5–10 minutes
+    clamp_time_min: null,
+    dry_to_touch_min: 30,  // Skin Time / Tack Free: 30 minutes
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24), // Cure Time: 24 hours (at 73°F/50% RH)
+    humidity_behaviour: "bell_curve",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 32, // Application Temperature: above 32°F (0°C)
+    max_application_temp_f: 120, // Application Temperature: below 120°F (49°C)
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: true,
+    structural_liability: false, // TDS explicitly states "not for structural repairs"
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.gesealants.com/products/all-purpose-silicone-1-window-door-sealant",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
   // ─── Sakrete Maximizer Concrete Mix ──────────────────────────────────────
   // TDS: Sakrete Maximizer Concrete Mix (Sakrete datasheet, Rev. 05/20)
   // Source: confirmed from uploaded PDF
@@ -411,8 +443,7 @@ const products: Prisma.ProductCreateInput[] = [
     home_depot_sku: null,
   },
 
-  // ─── Loctite PL400 Subfloor & Deck Construction Adhesive ─────────────────
-  // TDS: Loctite PL400 Subfloor Construction Adhesive (Henkel TDS, rev. 01/11/2022)
+  // ─── Loctite PL400 Subfloor & Deck Construction Adhesive ─────────────────  // TDS: Loctite PL400 Subfloor Construction Adhesive (Henkel TDS, rev. 01/11/2022)
   // Source: confirmed from uploaded PDF
   // Cure time stated as range: "2–7 days at 78°F/50%RH" — using upper bound (168h).
   // Application Temperature explicitly stated: 0°F (-18°C) to 100°F (38°C).
