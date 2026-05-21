@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id                     Int       @id @default(autoincrement())
+  manufacturer           String
+  product_name           String
+  category               String
+  sub_category           String?
+  slug                   String    @unique
+  open_time_min          Int?
+  clamp_time_min         Int?
+  dry_to_touch_min       Int?
+  dry_to_recoat_min      Int?
+  full_cure_hours        Decimal
+  humidity_behaviour     String
+  temp_doubling_celsius  Decimal   @default(10)
+  min_application_temp_f Int
+  max_application_temp_f Int
+  mfft_celsius           Decimal?
+  amine_blush_risk       Boolean   @default(false)
+  dew_point_warning      Boolean   @default(false)
+  silicone_bell_curve    Boolean   @default(false)
+  structural_liability   Boolean   @default(false)
+  substrate_porosity_factor Decimal?
+  tds_url                String
+  tds_last_verified      DateTime
+  verified_by_human      Boolean   @default(false)
+  amazon_asin            String?
+  home_depot_sku         String?
+  updated_at             DateTime  @updatedAt
+
+  @@map("products")
+}

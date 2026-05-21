@@ -1,0 +1,30 @@
+[
+  {
+    "_comment": "Fill this in manually from the manufacturer TDS PDF. One object per product.",
+    "manufacturer": "Titebond",
+    "product_name": "Titebond III Ultimate Wood Glue",
+    "category": "wood_glue",
+    "sub_category": "PVA",
+    "slug": "titebond-iii-ultimate-wood-glue",
+    "open_time_min": 8,
+    "clamp_time_min": 30,
+    "dry_to_touch_min": null,
+    "dry_to_recoat_min": null,
+    "full_cure_hours": 24,
+    "humidity_behaviour": "negative",
+    "temp_doubling_celsius": 10,
+    "min_application_temp_f": 47,
+    "max_application_temp_f": 110,
+    "mfft_celsius": 7.2,
+    "amine_blush_risk": false,
+    "dew_point_warning": false,
+    "silicone_bell_curve": false,
+    "structural_liability": false,
+    "substrate_porosity_factor": null,
+    "tds_url": "https://www.titebond.com/product/wood-glues/titebond-iii-ultimate-wood-glue",
+    "tds_last_verified": "2026-05-21",
+    "verified_by_human": false,
+    "amazon_asin": null,
+    "home_depot_sku": null
+  }
+]
