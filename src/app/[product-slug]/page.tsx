@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
 
   const categoryLabel = product.category
     .replace(/_/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/\b\w/g, (c: string) => c.toUpperCase())
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
