@@ -443,6 +443,43 @@ const products: Prisma.ProductCreateInput[] = [
     home_depot_sku: null,
   },
 
+  // ─── Titebond Instant Bond Adhesive Gel ──────────────────────────────────
+  // TDS: Titebond Instant Bond Adhesive Gel product data page (titebond.com/print/product/...)
+  // Source: official Titebond product print page (saved HTML), confirmed from uploaded file
+  // min temp: "Application Temperature: Above 50°F (10°C)" — explicit.
+  // max temp: "For best results, apply between 55°F and 85°F" (Limitations section) —
+  //   only upper-bound figure on the page; same interpretation precedent as Loctite PL400.
+  // Humidity: cyanoacrylates polymerise via surface/atmospheric moisture → "positive".
+  // Times are sub-minute; integer fields floored to 1 min minimum.
+  {
+    manufacturer: "Titebond",
+    product_name: "Instant Bond Adhesive Gel",
+    category: "adhesive",
+    sub_category: "cyanoacrylate",
+    slug: "titebond-instant-bond-adhesive-gel",
+    open_time_min: 1,           // Assembly time: 30 seconds (stated); rounded up to 1 min (Int field)
+    clamp_time_min: 1,          // Set: 20 seconds; initial cure: 60 seconds → 1 min
+    dry_to_touch_min: 1,        // Initial cure 60 seconds → 1 min
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(8), // "*Full cure in 8 hours" — explicit
+    humidity_behaviour: "positive",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 50,  // Explicit: "Application Temperature: Above 50°F (10°C)"
+    max_application_temp_f: 85,  // Limitations: "For best results, apply between 55°F and 85°F"
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.titebond.com/print/product/9059d175-2198-4bbe-90d1-f2406dd7049a",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
   // ─── Loctite PL400 Subfloor & Deck Construction Adhesive ─────────────────  // TDS: Loctite PL400 Subfloor Construction Adhesive (Henkel TDS, rev. 01/11/2022)
   // Source: confirmed from uploaded PDF
   // Cure time stated as range: "2–7 days at 78°F/50%RH" — using upper bound (168h).
