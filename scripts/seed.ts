@@ -279,6 +279,105 @@ const products: Prisma.ProductCreateInput[] = [
     amazon_asin: null,
     home_depot_sku: null,
   },
+
+  // ─── DAP Alex Plus Acrylic Latex Caulk Plus Silicone ─────────────────────
+  // TDS: DAP Alex Plus Acrylic Latex Caulk Plus Silicone (DAP TDS, dated 5/12/25)
+  // Source: confirmed from uploaded PDF
+  {
+    manufacturer: "DAP",
+    product_name: "Alex Plus Acrylic Latex Caulk Plus Silicone",
+    category: "sealant",
+    sub_category: "acrylic_latex",
+    slug: "dap-alex-plus-acrylic-latex-caulk-plus-silicone",
+    open_time_min: 10,       // Tooling Time: 10 minutes
+    clamp_time_min: null,
+    dry_to_touch_min: 30,    // Tack Free: 30 minutes
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24), // Full Dry Through: 24 hours
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 40, // Application Temperature Range: 40°F to 100°F
+    max_application_temp_f: 100,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.dap.com/en-us/products/alex-plus-acrylic-latex-caulk-plus-silicone/",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── DAP Weldwood Original Contact Cement ────────────────────────────────
+  // TDS: DAP Weldwood Original Contact Cement (DAP TDS, rev. 08/2018)
+  // Source: confirmed from uploaded PDF
+  // "Reaches maximum holding strength in 7 days" — explicit upper bound.
+  {
+    manufacturer: "DAP",
+    product_name: "Weldwood Original Contact Cement",
+    category: "adhesive",
+    sub_category: "contact_cement",
+    slug: "dap-weldwood-original-contact-cement",
+    open_time_min: 120,     // Open time: up to 2 hours (120 min)
+    clamp_time_min: null,   // Contact cement bonds on contact; no clamping
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(168), // 7 days — explicitly stated maximum holding strength
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 65, // Application Temperature: 65°F to 120°F
+    max_application_temp_f: 120,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.dap.com/en-us/products/weldwood-original-contact-cement/",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Loctite PL400 Subfloor & Deck Construction Adhesive ─────────────────
+  // TDS: Loctite PL400 Subfloor Construction Adhesive (Henkel TDS, rev. 01/11/2022)
+  // Source: confirmed from uploaded PDF
+  // Cure time stated as range: "2–7 days at 78°F/50%RH" — using upper bound (168h).
+  // Application Temperature explicitly stated: 0°F (-18°C) to 100°F (38°C).
+  {
+    manufacturer: "Loctite",
+    product_name: "PL400 Subfloor & Deck Construction Adhesive",
+    category: "adhesive",
+    sub_category: "synthetic_rubber",
+    slug: "loctite-pl400-subfloor-deck-construction-adhesive",
+    open_time_min: 15,      // Working Time: 15 minutes
+    clamp_time_min: null,
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(168), // TDS states 2–7 days; conservative upper bound used
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 0,   // Explicit: "Apply between 0°F (-18°C) and 100°F (38°C)"
+    max_application_temp_f: 100,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.loctiteproducts.com/content/dam/loctite/en-US/documents/tds/tds-loctite-pl400.pdf",
+    tds_last_verified: new Date("2026-05-21"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
 ];
 
 async function main() {
