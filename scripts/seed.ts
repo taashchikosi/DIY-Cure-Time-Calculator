@@ -512,6 +512,152 @@ const products: Prisma.ProductCreateInput[] = [
     amazon_asin: null,
     home_depot_sku: null,
   },
+
+  // ─── DAP Dynaflex Ultra Advanced Exterior Sealant ────────────────────────
+  // TDS: DAP Dynaflex Ultra Advanced Exterior Sealant for Windows, Doors, Siding & Trim
+  //      (DAP Products Inc., dated 2/25/2019)
+  // Source: confirmed from uploaded PDF
+  // Full performance: "Sealant reaches full performance in 72 hours" — explicit in application
+  //   instructions. "Full Dry Through: 7-14 days" is the color transition (white→clear),
+  //   not the functional cure milestone; 72h used for full_cure_hours.
+  // Application Temperature Range: 40°F to 100°F — explicit table field.
+  {
+    manufacturer: "DAP",
+    product_name: "Dynaflex Ultra Advanced Exterior Sealant",
+    category: "sealant",
+    sub_category: "acrylic_latex",
+    slug: "dap-dynaflex-ultra-advanced-exterior-sealant",
+    open_time_min: 15,         // Tooling Time (Working Time): 10–15 minutes; upper bound
+    clamp_time_min: null,
+    dry_to_touch_min: 60,      // Tack Free Time: 60 minutes
+    dry_to_recoat_min: 60,     // Paint Ready Time: 1 hour
+    full_cure_hours: new Prisma.Decimal(72), // "Sealant reaches full performance in 72 hours"
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 40,  // Application Temperature Range: 40°F to 100°F
+    max_application_temp_f: 100,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.dap.com/en-us/products/dynaflex-ultra-advanced-exterior-sealant/",
+    tds_last_verified: new Date("2026-05-22"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Liquid Nails Heavy Duty Construction Adhesive LN-903 ────────────────
+  // TDS: Liquid Nails Heavy Duty LN-903 (PPG Architectural Finishes, rev. 5/2022)
+  // Source: confirmed from uploaded PDF
+  // "MINIMUM CURE TIME: 24 hours at room temperature" — explicit minimum only.
+  // Shear strength table peaks at 7 days (240 psi vs 150 psi at 24h), indicating
+  //   full cure is 7 days; conservative upper bound 168h used for full_cure_hours.
+  // Application Temperature: 40°F to 100°F — confirmed in Product Data table AND
+  //   "Permissible Temperatures During Application" section (both material & substrate).
+  {
+    manufacturer: "Liquid Nails",
+    product_name: "Heavy Duty Interior/Exterior Construction Adhesive",
+    category: "adhesive",
+    sub_category: "acrylic_latex",
+    slug: "liquid-nails-heavy-duty-construction-adhesive-ln903",
+    open_time_min: 20,         // Open Time: 20 minutes at room temperature
+    clamp_time_min: null,
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(168), // 7 days — shear strength peaks at 7-day datapoint
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 40,  // Application Temperature: 40°F to 100°F
+    max_application_temp_f: 100,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.liquidnails.com/sites/default/files/product-data-sheet/LN-903_Data_Sheet.pdf",
+    tds_last_verified: new Date("2026-05-22"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Loctite PL 500 Landscape Construction Adhesive ──────────────────────
+  // TDS: Loctite PL 500 Landscape Construction Adhesive (Henkel TDS, rev. July 12, 2021)
+  // Source: confirmed from uploaded PDF (Ref. #459029)
+  // Cure time: "2 to 7 days* at 78°F (25°C) and 50% RH" — conservative upper bound (168h).
+  // Clamping Time: 24 hours — explicit field in 2021 TDS.
+  // Application Temperature: "Apply and cure between 0°F (-18°C) and below 100°F (38°C)" —
+  //   older 2015 TDS states exactly 100°F; 100°F used as the ceiling.
+  {
+    manufacturer: "Loctite",
+    product_name: "PL 500 Landscape Construction Adhesive",
+    category: "adhesive",
+    sub_category: "synthetic_rubber",
+    slug: "loctite-pl500-landscape-construction-adhesive",
+    open_time_min: 15,         // Open Time: 15 minutes
+    clamp_time_min: 1440,      // Clamping Time: 24 hours (explicit field in 2021 TDS)
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(168), // 2–7 days; conservative upper bound used
+    humidity_behaviour: "negative",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 0,   // Explicit: "Apply and cure between 0°F (-18°C) and below 100°F"
+    max_application_temp_f: 100,
+    mfft_celsius: null,
+    amine_blush_risk: false,
+    dew_point_warning: false,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.loctiteproducts.com/content/dam/loctite/en-US/documents/tds/TDS_Loctite_PL500_Landscape.pdf",
+    tds_last_verified: new Date("2026-05-22"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
+
+  // ─── Loctite Epoxy Weld Bonding Compound ─────────────────────────────────
+  // TDS: Loctite Epoxy Weld Bonding Compound (Henkel TDS, rev. June 1, 2010; Ref. 390139/390127)
+  // Source: confirmed from uploaded PDF
+  // Full cure: "Parts can be machined within 16 to 24 hours" — machining = fully cured.
+  //   Shear strength on cold-rolled steel: 3355 psi at 24h vs 3483 psi at 8 days (3.8% gain),
+  //   confirming full cure is effectively reached at 24h; 24h used for full_cure_hours.
+  // Hardener explicitly contains "amine resin" — amine_blush_risk=TRUE.
+  {
+    manufacturer: "Loctite",
+    product_name: "Epoxy Weld Bonding Compound",
+    category: "adhesive",
+    sub_category: "epoxy",
+    slug: "loctite-epoxy-weld-bonding-compound",
+    open_time_min: 6,          // Set Time: 4–6 minutes (upper bound)
+    clamp_time_min: 15,        // Handling Time: 10–15 minutes (upper bound)
+    dry_to_touch_min: null,
+    dry_to_recoat_min: null,
+    full_cure_hours: new Prisma.Decimal(24), // Machining Time: 16–24h; strength plateaus at 24h
+    humidity_behaviour: "neutral",
+    temp_doubling_celsius: new Prisma.Decimal(10),
+    min_application_temp_f: 39,  // Application Temperature: 39°F (4°C) to 95°F (35°C)
+    max_application_temp_f: 95,
+    mfft_celsius: null,
+    amine_blush_risk: true,
+    dew_point_warning: true,
+    silicone_bell_curve: false,
+    structural_liability: false,
+    substrate_porosity_factor: null,
+    tds_url:
+      "https://www.loctiteproducts.com/content/dam/loctite/en-US/documents/tds/tds-loctite-epoxy-weld.pdf",
+    tds_last_verified: new Date("2026-05-22"),
+    verified_by_human: false,
+    amazon_asin: null,
+    home_depot_sku: null,
+  },
 ];
 
 async function main() {
