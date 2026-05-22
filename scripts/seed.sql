@@ -31,7 +31,7 @@ INSERT INTO products (
  '2026-05-21', false, NULL, NULL, NOW()),
 
 -- 3. Loctite PL 375 Heavy Duty Construction Adhesive
-('Loctite', 'PL 375 Heavy Duty Construction Adhesive', 'adhesive', 'PVA',
+('Loctite', 'PL 375 Heavy Duty Construction Adhesive', 'adhesive', 'PVA_construction',
  'loctite-pl-375-heavy-duty-construction-adhesive',
  60, NULL, NULL, NULL,
  48, 'negative', 10, 40, 100, 4,

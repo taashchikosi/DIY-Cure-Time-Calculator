@@ -9,7 +9,7 @@ export const revalidate = 86400
 const VALID_CATEGORIES: Record<string, string> = {
   'wood-glue': 'Wood Glue',
   epoxy: 'Epoxy',
-  'silicone-caulk': 'Silicone Caulk',
+  'silicone-caulk': 'Caulk & Sealant',
   'construction-adhesive': 'Construction Adhesive',
   concrete: 'Concrete & Mortar',
 }
@@ -20,16 +20,28 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   epoxy:
     'Two-part structural and laminating epoxies — amine blush risks, Q10 scaling, and pot-life at your conditions.',
   'silicone-caulk':
-    'Acetoxy and neutral-cure silicone sealants — skinning risk, optimal humidity range, and cure depth rates.',
+    'Silicone and acrylic latex sealants — skinning risk, optimal humidity range, and cure depth rates.',
   'construction-adhesive':
     'Solvent-based and hybrid construction adhesives — application limits, flash-off time, and full cure duration.',
   concrete:
     'Portland cement, mortar, and concrete mixes — hydration curing, minimum curing periods, and temperature effects.',
 }
 
-// DB category format uses underscores; URL slugs use hyphens
-function slugToDbCategory(slug: string): string {
-  return slug.replace(/-/g, '_')
+// Maps URL slugs to the actual category/sub_category values in the DB
+type DbWhere = {
+  category: string
+  sub_category?: { in: string[] } | string | { not: string }
+}
+
+const CATEGORY_DB_WHERE: Record<string, DbWhere> = {
+  'wood-glue': { category: 'adhesive', sub_category: { in: ['PVA', 'aliphatic_resin'] } },
+  epoxy: { category: 'adhesive', sub_category: 'epoxy' },
+  'silicone-caulk': { category: 'sealant' },
+  'construction-adhesive': {
+    category: 'adhesive',
+    sub_category: { in: ['polyurethane', 'PVA', 'PVA_construction', 'contact_cement', 'synthetic_rubber', 'acrylic_latex', 'cyanoacrylate'] },
+  },
+  concrete: { category: 'concrete' },
 }
 
 interface Props {
@@ -59,7 +71,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const label = VALID_CATEGORIES[slug]
   const description = CATEGORY_DESCRIPTIONS[slug]
-  const dbCategory = slugToDbCategory(slug)
+  const dbWhere = CATEGORY_DB_WHERE[slug]
 
   let products: Array<{
     id: number
@@ -74,7 +86,7 @@ export default async function CategoryPage({ params }: Props) {
 
   try {
     products = await prisma.product.findMany({
-      where: { category: dbCategory, verified_by_human: true },
+      where: { ...dbWhere, verified_by_human: true },
       select: {
         id: true,
         slug: true,
@@ -88,7 +100,6 @@ export default async function CategoryPage({ params }: Props) {
       orderBy: { product_name: 'asc' },
     })
   } catch {
-    // DB not available during build — show empty state
     products = []
   }
 

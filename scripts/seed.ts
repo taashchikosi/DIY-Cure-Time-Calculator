@@ -90,7 +90,7 @@ const products: Prisma.ProductCreateInput[] = [
     manufacturer: "Loctite",
     product_name: "PL 375 Heavy Duty Construction Adhesive",
     category: "adhesive",
-    sub_category: "PVA",
+    sub_category: "PVA_construction",
     slug: "loctite-pl-375-heavy-duty-construction-adhesive",
     open_time_min: 60,
     clamp_time_min: null,

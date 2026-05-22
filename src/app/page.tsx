@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
+
+export const revalidate = 86400
 
 export const metadata: Metadata = {
   title: 'DIY Cure Time Calculator — Temperature & Humidity Adjusted',
@@ -23,8 +26,8 @@ const categories = [
   },
   {
     slug: 'silicone-caulk',
-    label: 'Silicone Caulk',
-    description: 'Bathroom, kitchen, and general-purpose silicone',
+    label: 'Caulk & Sealant',
+    description: 'Silicone, acrylic latex, and kitchen & bath sealants',
     icon: '🚿',
   },
   {
@@ -41,7 +44,30 @@ const categories = [
   },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  let products: Array<{
+    id: number
+    slug: string
+    product_name: string
+    manufacturer: string
+    full_cure_hours: unknown
+  }> = []
+
+  try {
+    products = await prisma.product.findMany({
+      select: {
+        id: true,
+        slug: true,
+        product_name: true,
+        manufacturer: true,
+        full_cure_hours: true,
+      },
+      orderBy: [{ manufacturer: 'asc' }, { product_name: 'asc' }],
+    })
+  } catch {
+    products = []
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
       {/* Hero */}
@@ -78,14 +104,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Coming soon notice */}
-      <section className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-6 mb-8">
-        <h2 className="text-base font-semibold text-zinc-800 mb-1">Product Pages Coming Soon</h2>
-        <p className="text-sm text-zinc-600">
-          We&apos;re verifying manufacturer data for specific products. Individual product pages with
-          precise cure-time calculators will appear here as they pass our review process.
-        </p>
-      </section>
+      {/* All products */}
+      {products.length > 0 && (
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-zinc-900 mb-4">All Products</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {products.map((p) => (
+              <Link
+                key={p.id}
+                href={`/${p.slug}`}
+                className="block border border-zinc-200 rounded-lg p-3 hover:border-zinc-400 hover:shadow-sm transition-all"
+              >
+                <h3 className="font-medium text-zinc-900 text-sm leading-snug mb-0.5">
+                  {p.product_name}
+                </h3>
+                <p className="text-xs text-zinc-500">
+                  {p.manufacturer} &middot; Full cure: {Number(p.full_cure_hours)}h
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* How it works */}
       <section className="mb-8">
