@@ -205,7 +205,6 @@ ON CONFLICT (slug) DO UPDATE SET
   substrate_porosity_factor = EXCLUDED.substrate_porosity_factor,
   tds_url                 = EXCLUDED.tds_url,
   tds_last_verified       = EXCLUDED.tds_last_verified,
-  verified_by_human       = EXCLUDED.verified_by_human,
   amazon_asin             = EXCLUDED.amazon_asin,
   home_depot_sku          = EXCLUDED.home_depot_sku,
   updated_at              = NOW();

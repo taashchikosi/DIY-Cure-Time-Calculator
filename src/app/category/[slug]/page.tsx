@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
+import ProductImage from '@/components/ProductImage'
 
 export const revalidate = 86400
 
@@ -74,15 +75,17 @@ export default async function CategoryPage({ params }: Props) {
     min_application_temp_f: number
     max_application_temp_f: number
     sub_category: string | null
+    product_image_url: string | null
   }> = []
 
   try {
     products = await prisma.product.findMany({
-      where: { ...dbWhere, verified_by_human: true },
+      where: { ...dbWhere },
       select: {
         id: true, slug: true, product_name: true, manufacturer: true,
         full_cure_hours: true, min_application_temp_f: true,
         max_application_temp_f: true, sub_category: true,
+        product_image_url: true,
       },
       orderBy: { product_name: 'asc' },
     })
@@ -131,10 +134,17 @@ export default async function CategoryPage({ params }: Props) {
             <Link
               key={p.id}
               href={`/${p.slug}`}
-              className="group rounded-lg p-4 transition-all hover:scale-[1.02]"
+              className="card-hover group rounded-lg p-4 transition-all hover:scale-[1.02]"
               style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)' }}
             >
-              <h2 className="font-semibold text-sm leading-snug mb-0.5 group-hover:text-[--gold-bright] transition-colors" style={{ color: 'var(--cream)' }}>
+              <ProductImage
+                imageUrl={p.product_image_url}
+                productName={p.product_name}
+                category={dbWhere.category}
+                subCategory={p.sub_category}
+                size="sm"
+              />
+              <h2 className="font-semibold text-sm leading-snug mb-0.5 mt-3 group-hover:text-[--gold-bright] transition-colors" style={{ color: 'var(--cream)' }}>
                 {p.product_name}
               </h2>
               <p className="text-xs mb-3" style={{ color: 'var(--cream-muted)' }}>

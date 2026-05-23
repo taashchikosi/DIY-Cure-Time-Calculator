@@ -82,3 +82,32 @@ input[type="range"]::-moz-range-thumb {
   padding: 0.2rem 0.6rem;
   border-radius: 2px;
 }
+
+/* ── Interactive card hover ─────────────────────────── */
+.card-hover {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+.card-hover:hover {
+  border-color: var(--gold-dim) !important;
+  box-shadow: 0 0 0 1px var(--gold-dim), 0 6px 24px rgba(200, 137, 42, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Nav link hover ─────────────────────────────────── */
+.nav-link {
+  transition: color 0.15s ease;
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.2s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}

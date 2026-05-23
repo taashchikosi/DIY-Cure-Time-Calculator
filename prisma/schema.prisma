@@ -33,6 +33,7 @@ model Product {
   verified_by_human      Boolean   @default(false)
   amazon_asin            String?
   home_depot_sku         String?
+  product_image_url      String?
   updated_at             DateTime  @updatedAt
 
   @@map("products")

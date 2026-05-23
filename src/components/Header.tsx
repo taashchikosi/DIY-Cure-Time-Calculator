@@ -6,7 +6,7 @@ export default function Header() {
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href="/" className="flex items-center gap-2.5 group hover:opacity-90">
           <div
             className="flex items-center justify-center w-9 h-9 rounded font-black text-base shrink-0"
             style={{
@@ -30,24 +30,24 @@ export default function Header() {
         <nav aria-label="Main navigation">
           <ul className="flex flex-wrap items-center gap-5 text-sm" style={{ color: 'var(--cream-muted)' }}>
             <li>
-              <Link href="/" className="hover:text-[--cream] transition-colors" style={{}}>
+              <Link href="/" className="nav-link hover:text-[--cream] transition-colors">
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-[--cream] transition-colors">
+              <Link href="/about" className="nav-link hover:text-[--cream] transition-colors">
                 About
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-[--cream] transition-colors">
+              <Link href="/contact" className="nav-link hover:text-[--cream] transition-colors">
                 Contact
               </Link>
             </li>
             <li>
               <Link
                 href="/category/construction-adhesive"
-                className="hidden sm:inline hover:text-[--cream] transition-colors"
+                className="hidden sm:inline nav-link hover:text-[--cream] transition-colors"
               >
                 Products
               </Link>

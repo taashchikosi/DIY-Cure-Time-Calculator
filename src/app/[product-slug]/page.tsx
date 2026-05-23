@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import CalculatorForm from '@/components/CalculatorForm'
+import ProductImage from '@/components/ProductImage'
 
 export const revalidate = 86400
 
@@ -62,10 +63,20 @@ export default async function ProductPage({ params }: Props) {
       <h1 className="text-2xl sm:text-3xl font-black mb-1 tracking-tight" style={{ color: 'var(--cream)' }}>
         {product.product_name}
       </h1>
-      <p className="text-sm mb-8" style={{ color: 'var(--cream-muted)' }}>
+      <p className="text-sm mb-6" style={{ color: 'var(--cream-muted)' }}>
         {product.manufacturer}
         {product.sub_category ? ` · ${product.sub_category.replace(/_/g, ' ')}` : ''}
       </p>
+
+      <div className="mb-8">
+        <ProductImage
+          imageUrl={product.product_image_url}
+          productName={product.product_name}
+          category={product.category}
+          subCategory={product.sub_category}
+          size="lg"
+        />
+      </div>
 
       {/* Key specs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
@@ -79,7 +90,7 @@ export default async function ProductPage({ params }: Props) {
         ].map((spec) => (
           <div
             key={spec.label}
-            className="rounded-lg p-3"
+            className="card-hover rounded-lg p-3"
             style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)' }}
           >
             <p className="text-xs mb-1" style={{ color: 'var(--cream-muted)' }}>{spec.label}</p>

@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 }
 
 const categories = [
-  { slug: 'wood-glue',               label: 'Wood Glue',             icon: '🪵', desc: 'PVA & polyurethane glues' },
-  { slug: 'epoxy',                   label: 'Epoxy',                 icon: '🧪', desc: 'Two-part structural epoxies' },
-  { slug: 'silicone-caulk',          label: 'Caulk & Sealant',      icon: '🚿', desc: 'Silicone & acrylic latex' },
-  { slug: 'construction-adhesive',   label: 'Construction Adhesive', icon: '🏗️', desc: 'Heavy-duty construction' },
-  { slug: 'concrete',                label: 'Concrete & Mortar',     icon: '🧱', desc: 'Cement-based materials' },
+  { slug: 'wood-glue',               label: 'Wood Glue',             icon: '🪵', desc: 'PVA & polyurethane glues',    color: '#c8892a' },
+  { slug: 'epoxy',                   label: 'Epoxy',                 icon: '🧪', desc: 'Two-part structural epoxies', color: '#60a5fa' },
+  { slug: 'silicone-caulk',          label: 'Caulk & Sealant',      icon: '🚿', desc: 'Silicone & acrylic latex',    color: '#34d399' },
+  { slug: 'construction-adhesive',   label: 'Construction Adhesive', icon: '🏗️', desc: 'Heavy-duty construction',     color: '#f97316' },
+  { slug: 'concrete',                label: 'Concrete & Mortar',     icon: '🧱', desc: 'Cement-based materials',      color: '#9ca3af' },
 ]
 
 export default async function HomePage() {
@@ -88,13 +88,23 @@ export default async function HomePage() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="group rounded-lg p-4 text-center transition-all hover:scale-[1.02]"
+              className="card-hover group rounded-lg p-4 text-center transition-all hover:scale-[1.02]"
               style={{
                 backgroundColor: 'var(--bg-card)',
                 border: '1px solid var(--border-dim)',
               }}
             >
-              <div className="text-2xl mb-2">{cat.icon}</div>
+              <div
+                style={{
+                  backgroundColor: cat.color + '22',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginBottom: '8px',
+                  display: 'inline-block',
+                }}
+              >
+                <span className="text-2xl">{cat.icon}</span>
+              </div>
               <h3 className="text-sm font-semibold mb-0.5 group-hover:text-[--gold-bright] transition-colors" style={{ color: 'var(--cream)' }}>
                 {cat.label}
               </h3>
@@ -115,7 +125,7 @@ export default async function HomePage() {
               <Link
                 key={p.id}
                 href={`/${p.slug}`}
-                className="group flex items-start justify-between rounded-lg p-4 transition-all hover:scale-[1.01]"
+                className="card-hover group flex items-start justify-between rounded-lg p-4 transition-all hover:scale-[1.01]"
                 style={{
                   backgroundColor: 'var(--bg-card)',
                   border: '1px solid var(--border-dim)',
@@ -143,7 +153,7 @@ export default async function HomePage() {
       )}
 
       {/* ── How It Works ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: 'var(--bg-surface)', borderTop: '1px solid var(--border-dim)', borderBottom: '1px solid var(--border-dim)' }}>
+      <section style={{ backgroundColor: 'var(--bg-elevated)', borderTop: '1px solid var(--border-dim)', borderBottom: '1px solid var(--border-dim)' }}>
         <div className="max-w-5xl mx-auto px-4 py-10">
           <h2 className="text-xs font-semibold uppercase tracking-widest mb-7" style={{ color: 'var(--gold)' }}>
             How It Works
