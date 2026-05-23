@@ -21,11 +21,7 @@ async function getProduct(slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { 'product-slug': slug } = await params
   const product = await getProduct(slug)
-
-  if (!product) {
-    return { title: 'Product Not Found' }
-  }
-
+  if (!product) return { title: 'Product Not Found' }
   return {
     title: `${product.product_name} Cure Time Calculator`,
     description: `How long does ${product.product_name} by ${product.manufacturer} take to cure? Get an estimate adjusted for your temperature and humidity.`,
@@ -35,10 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   const { 'product-slug': slug } = await params
   const product = await getProduct(slug)
-
-  if (!product) {
-    notFound()
-  }
+  if (!product) notFound()
 
   const categoryLabel = product.category
     .replace(/_/g, ' ')
@@ -46,96 +39,74 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+
       {/* Breadcrumb */}
-      <nav className="text-xs text-zinc-500 mb-6" aria-label="Breadcrumb">
+      <nav className="text-xs mb-6" aria-label="Breadcrumb" style={{ color: 'var(--cream-muted)' }}>
         <ol className="flex flex-wrap gap-1">
+          <li><a href="/" className="hover:text-[--cream] transition-colors">Home</a></li>
+          <li aria-hidden="true" style={{ color: 'var(--cream-dim)' }}>/</li>
           <li>
-            <a href="/" className="hover:text-zinc-800">
-              Home
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <a
-              href={`/category/${product.category.replace(/_/g, '-')}`}
-              className="hover:text-zinc-800"
-            >
+            <a href={`/category/${product.category.replace(/_/g, '-')}`} className="hover:text-[--cream] transition-colors">
               {categoryLabel}
             </a>
           </li>
-          <li aria-hidden="true">/</li>
-          <li className="text-zinc-700">{product.product_name}</li>
+          <li aria-hidden="true" style={{ color: 'var(--cream-dim)' }}>/</li>
+          <li style={{ color: 'var(--cream)' }}>{product.product_name}</li>
         </ol>
       </nav>
 
       {/* Product header */}
-      <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-1">
-        {product.product_name} — Cure Time Calculator
+      <div className="mb-2">
+        <span className="tag-badge mb-3 inline-block">{categoryLabel}</span>
+      </div>
+      <h1 className="text-2xl sm:text-3xl font-black mb-1 tracking-tight" style={{ color: 'var(--cream)' }}>
+        {product.product_name}
       </h1>
-      <p className="text-sm text-zinc-500 mb-6">
-        {product.manufacturer} &middot; {categoryLabel}
-        {product.sub_category ? ` · ${product.sub_category}` : ''}
+      <p className="text-sm mb-8" style={{ color: 'var(--cream-muted)' }}>
+        {product.manufacturer}
+        {product.sub_category ? ` · ${product.sub_category.replace(/_/g, ' ')}` : ''}
       </p>
 
       {/* Key specs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-        <div className="bg-zinc-50 rounded-md p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">Full cure (lab, 70°F/50% RH)</p>
-          <p className="text-lg font-semibold text-zinc-900">
-            {Number(product.full_cure_hours)}h
-          </p>
-        </div>
-        <div className="bg-zinc-50 rounded-md p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">Min application temp</p>
-          <p className="text-lg font-semibold text-zinc-900">
-            {product.min_application_temp_f}°F
-          </p>
-        </div>
-        <div className="bg-zinc-50 rounded-md p-3">
-          <p className="text-xs text-zinc-500 mb-0.5">Max application temp</p>
-          <p className="text-lg font-semibold text-zinc-900">
-            {product.max_application_temp_f}°F
-          </p>
-        </div>
-        {product.clamp_time_min != null && (
-          <div className="bg-zinc-50 rounded-md p-3">
-            <p className="text-xs text-zinc-500 mb-0.5">Clamp time</p>
-            <p className="text-lg font-semibold text-zinc-900">{product.clamp_time_min} min</p>
+        {[
+          { label: 'Full cure (70°F / 50% RH)', value: `${Number(product.full_cure_hours)}h` },
+          { label: 'Min application temp',       value: `${product.min_application_temp_f}°F` },
+          { label: 'Max application temp',       value: `${product.max_application_temp_f}°F` },
+          ...(product.clamp_time_min    != null ? [{ label: 'Clamp time',    value: `${product.clamp_time_min} min` }]    : []),
+          ...(product.open_time_min     != null ? [{ label: 'Open time',     value: `${product.open_time_min} min` }]     : []),
+          ...(product.dry_to_touch_min  != null ? [{ label: 'Dry to touch',  value: `${product.dry_to_touch_min} min` }]  : []),
+        ].map((spec) => (
+          <div
+            key={spec.label}
+            className="rounded-lg p-3"
+            style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)' }}
+          >
+            <p className="text-xs mb-1" style={{ color: 'var(--cream-muted)' }}>{spec.label}</p>
+            <p className="text-lg font-bold" style={{ color: 'var(--gold-bright)' }}>{spec.value}</p>
           </div>
-        )}
-        {product.open_time_min != null && (
-          <div className="bg-zinc-50 rounded-md p-3">
-            <p className="text-xs text-zinc-500 mb-0.5">Open time</p>
-            <p className="text-lg font-semibold text-zinc-900">{product.open_time_min} min</p>
-          </div>
-        )}
-        {product.dry_to_touch_min != null && (
-          <div className="bg-zinc-50 rounded-md p-3">
-            <p className="text-xs text-zinc-500 mb-0.5">Dry to touch</p>
-            <p className="text-lg font-semibold text-zinc-900">{product.dry_to_touch_min} min</p>
-          </div>
-        )}
+        ))}
       </div>
 
       {/* Safety flags */}
       {(product.amine_blush_risk || product.structural_liability || product.silicone_bell_curve) && (
         <div className="mb-6 space-y-2">
           {product.structural_liability && (
-            <div className="bg-red-50 border border-red-400 text-red-900 rounded-md px-4 py-3 text-sm">
+            <div className="rounded-md px-4 py-3 text-sm" style={{ backgroundColor: 'rgba(220,38,38,0.1)', border: '1px solid #7f1d1d', color: '#fca5a5' }}>
               <strong>Structural liability notice:</strong> This material is used in structural
               applications. Cure-time estimates are NOT valid for load-bearing or safety-critical
               decisions. Consult ACI standards and perform physical strength testing.
             </div>
           )}
           {product.amine_blush_risk && (
-            <div className="bg-amber-50 border border-amber-400 text-amber-900 rounded-md px-4 py-3 text-sm">
+            <div className="rounded-md px-4 py-3 text-sm" style={{ backgroundColor: 'rgba(217,119,6,0.1)', border: '1px solid #78350f', color: '#fcd34d' }}>
               <strong>Amine blush risk:</strong> This epoxy can develop a waxy surface film at high
               humidity or when the substrate is near the dew point. The calculator will warn you if
               your conditions trigger this risk.
             </div>
           )}
           {product.silicone_bell_curve && (
-            <div className="bg-amber-50 border border-amber-400 text-amber-900 rounded-md px-4 py-3 text-sm">
+            <div className="rounded-md px-4 py-3 text-sm" style={{ backgroundColor: 'rgba(217,119,6,0.1)', border: '1px solid #78350f', color: '#fcd34d' }}>
               <strong>Skinning sensitivity:</strong> This silicone product is sensitive to high
               humidity. Above 70% RH there is a risk of premature surface cure with an uncured
               interior.
@@ -150,24 +121,19 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {/* TDS link */}
-      <div className="mb-6 text-sm text-zinc-600">
-        <p>
-          Data sourced from{' '}
-          <a
-            href={product.tds_url}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            className="text-zinc-900 underline"
-          >
-            manufacturer&apos;s Technical Data Sheet
-          </a>
-          . Last verified:{' '}
-          {new Date(product.tds_last_verified).toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric',
-          })}
-          .
-        </p>
+      <div className="mb-6 text-sm rounded-lg px-4 py-3" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}>
+        Data sourced from{' '}
+        <a
+          href={product.tds_url}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          className="underline hover:text-[--gold-bright] transition-colors"
+          style={{ color: 'var(--gold)' }}
+        >
+          manufacturer&apos;s Technical Data Sheet
+        </a>
+        . Last verified:{' '}
+        {new Date(product.tds_last_verified).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}.
       </div>
 
       <Disclaimer />

@@ -110,8 +110,8 @@ export default function TermsPage() {
           <h2 className="text-xl font-semibold text-zinc-900 mb-2">10. Contact</h2>
           <p>
             For any questions about these Terms, contact:{' '}
-            <a href="mailto:taashira.chikosi@gmail.com" className="text-zinc-900 underline">
-              taashira.chikosi@gmail.com
+            <a href="mailto:diycurecalc@outlook.com" className="text-zinc-900 underline">
+              diycurecalc@outlook.com
             </a>
           </p>
         </section>

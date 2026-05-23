@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-main:     #0d0905;
+  --bg-surface:  #181108;
+  --bg-card:     #211608;
+  --bg-elevated: #2c1e0d;
+  --border-dim:  #3a2810;
+  --border-main: #55381a;
+  --gold:        #c8892a;
+  --gold-bright: #e8b446;
+  --gold-dim:    #7a5218;
+  --cream:       #f0e2c0;
+  --cream-muted: #a07a50;
+  --cream-dim:   #5a4028;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background-color: var(--bg-main);
+  color: var(--cream);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Slider styles ──────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"].temp-slider {
+  background: linear-gradient(to right, #3b82f6 0%, #22c55e 40%, #f97316 70%, #ef4444 100%);
+}
+
+input[type="range"].humidity-slider {
+  background: linear-gradient(to right, #92400e 0%, #3b82f6 60%, #1d4ed8 100%);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--bg-main);
+  box-shadow: 0 0 0 2px var(--gold);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 3px var(--gold-bright);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--bg-main);
+  cursor: pointer;
+}
+
+/* ── Gold badge tag ─────────────────────────────────── */
+.tag-badge {
+  display: inline-block;
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
 }

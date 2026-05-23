@@ -12,36 +12,11 @@ export const metadata: Metadata = {
 }
 
 const categories = [
-  {
-    slug: 'wood-glue',
-    label: 'Wood Glue',
-    description: 'PVA, polyurethane, and epoxy wood adhesives',
-    icon: '🪵',
-  },
-  {
-    slug: 'epoxy',
-    label: 'Epoxy',
-    description: 'Two-part structural and laminating epoxies',
-    icon: '🧪',
-  },
-  {
-    slug: 'silicone-caulk',
-    label: 'Caulk & Sealant',
-    description: 'Silicone, acrylic latex, and kitchen & bath sealants',
-    icon: '🚿',
-  },
-  {
-    slug: 'construction-adhesive',
-    label: 'Construction Adhesive',
-    description: 'Solvent-based and hybrid construction adhesives',
-    icon: '🏗️',
-  },
-  {
-    slug: 'concrete',
-    label: 'Concrete & Mortar',
-    description: 'Cement-based materials — hydration, not drying',
-    icon: '🧱',
-  },
+  { slug: 'wood-glue',               label: 'Wood Glue',             icon: '🪵', desc: 'PVA & polyurethane glues' },
+  { slug: 'epoxy',                   label: 'Epoxy',                 icon: '🧪', desc: 'Two-part structural epoxies' },
+  { slug: 'silicone-caulk',          label: 'Caulk & Sealant',      icon: '🚿', desc: 'Silicone & acrylic latex' },
+  { slug: 'construction-adhesive',   label: 'Construction Adhesive', icon: '🏗️', desc: 'Heavy-duty construction' },
+  { slug: 'concrete',                label: 'Concrete & Mortar',     icon: '🧱', desc: 'Cement-based materials' },
 ]
 
 export default async function HomePage() {
@@ -51,17 +26,12 @@ export default async function HomePage() {
     product_name: string
     manufacturer: string
     full_cure_hours: unknown
+    category: string
   }> = []
 
   try {
     products = await prisma.product.findMany({
-      select: {
-        id: true,
-        slug: true,
-        product_name: true,
-        manufacturer: true,
-        full_cure_hours: true,
-      },
+      select: { id: true, slug: true, product_name: true, manufacturer: true, full_cure_hours: true, category: true },
       orderBy: [{ manufacturer: 'asc' }, { product_name: 'asc' }],
     })
   } catch {
@@ -69,94 +39,141 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
-      {/* Hero */}
-      <section className="mb-10 sm:mb-14">
-        <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 leading-tight mb-4">
-          How Long Does Your Adhesive Take to Cure?
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-600 max-w-2xl mb-2">
-          Temperature and humidity dramatically change how long wood glue, epoxy, silicone caulk,
-          and concrete take to reach full strength. A product rated &ldquo;24 hours&rdquo; at 70°F can take
-          48+ hours on a cold garage floor — or fail completely.
-        </p>
-        <p className="text-base text-zinc-600 max-w-2xl">
-          Enter your conditions and get a material-specific estimate, with safety warnings for
-          amine blush, PVA chalking, and silicone skinning.
-        </p>
+    <div>
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: 'radial-gradient(ellipse at 20% 50%, #2c1a08 0%, #0d0905 65%)',
+          borderBottom: '1px solid var(--border-dim)',
+        }}
+      >
+        <div className="max-w-5xl mx-auto px-4 py-14 sm:py-20">
+          <div className="tag-badge mb-5">Precision · Confidence · Every Time</div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5 tracking-tight" style={{ color: 'var(--cream)' }}>
+            Know Exactly<br />
+            <span style={{ color: 'var(--gold-bright)' }}>When It&apos;s Ready.</span>
+          </h1>
+          <p className="text-base sm:text-lg max-w-xl mb-8 leading-relaxed" style={{ color: 'var(--cream-muted)' }}>
+            Temperature and humidity dramatically change cure times. A product rated &ldquo;24 hours&rdquo;
+            at 70°F can take 48+ hours on a cold garage floor — or fail completely.
+            Get a science-based estimate for your real conditions.
+          </p>
+
+          {/* Feature row */}
+          <div className="flex flex-wrap gap-6">
+            {[
+              { icon: '🛡️', title: 'Data You Can Trust',    sub: 'Direct from manufacturer TDS' },
+              { icon: '🌡️', title: 'Built for Real World',  sub: 'Q10 temperature scaling' },
+              { icon: '✅', title: 'Safety Warnings',       sub: 'Amine blush, chalking & more' },
+            ].map((f) => (
+              <div key={f.title} className="flex items-start gap-3">
+                <span className="text-xl mt-0.5">{f.icon}</span>
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: 'var(--cream)' }}>{f.title}</p>
+                  <p className="text-xs" style={{ color: 'var(--cream-muted)' }}>{f.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Categories */}
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">Browse by Material</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* ── Categories ───────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-4 py-10">
+        <h2 className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: 'var(--gold)' }}>
+          Browse by Material
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="block border border-zinc-200 rounded-lg p-4 hover:border-zinc-400 hover:shadow-sm transition-all"
+              className="group rounded-lg p-4 text-center transition-all hover:scale-[1.02]"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                border: '1px solid var(--border-dim)',
+              }}
             >
-              <div className="text-3xl mb-2">{cat.icon}</div>
-              <h3 className="font-semibold text-zinc-900 mb-1">{cat.label}</h3>
-              <p className="text-sm text-zinc-500">{cat.description}</p>
+              <div className="text-2xl mb-2">{cat.icon}</div>
+              <h3 className="text-sm font-semibold mb-0.5 group-hover:text-[--gold-bright] transition-colors" style={{ color: 'var(--cream)' }}>
+                {cat.label}
+              </h3>
+              <p className="text-xs leading-snug" style={{ color: 'var(--cream-muted)' }}>{cat.desc}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* All products */}
+      {/* ── All Products ─────────────────────────────────────── */}
       {products.length > 0 && (
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-zinc-900 mb-4">All Products</h2>
+        <section className="max-w-5xl mx-auto px-4 pb-10">
+          <h2 className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: 'var(--gold)' }}>
+            All Products ({products.length})
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {products.map((p) => (
               <Link
                 key={p.id}
                 href={`/${p.slug}`}
-                className="block border border-zinc-200 rounded-lg p-3 hover:border-zinc-400 hover:shadow-sm transition-all"
+                className="group flex items-start justify-between rounded-lg p-4 transition-all hover:scale-[1.01]"
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  border: '1px solid var(--border-dim)',
+                }}
               >
-                <h3 className="font-medium text-zinc-900 text-sm leading-snug mb-0.5">
-                  {p.product_name}
-                </h3>
-                <p className="text-xs text-zinc-500">
-                  {p.manufacturer} &middot; Full cure: {Number(p.full_cure_hours)}h
-                </p>
+                <div className="min-w-0 flex-1 pr-3">
+                  <h3
+                    className="font-semibold text-sm leading-snug mb-0.5 group-hover:text-[--gold-bright] transition-colors"
+                    style={{ color: 'var(--cream)' }}
+                  >
+                    {p.product_name}
+                  </h3>
+                  <p className="text-xs" style={{ color: 'var(--cream-muted)' }}>{p.manufacturer}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-sm font-bold" style={{ color: 'var(--gold)' }}>
+                    {Number(p.full_cure_hours)}h
+                  </span>
+                  <p className="text-xs" style={{ color: 'var(--cream-dim)' }}>full cure</p>
+                </div>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      {/* How it works */}
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">How It Works</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-zinc-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-zinc-300 mb-2">1</div>
-            <h3 className="font-medium text-zinc-800 mb-1">Find your product</h3>
-            <p className="text-sm text-zinc-600">
-              Browse by material category and select your specific adhesive or sealant.
-            </p>
-          </div>
-          <div className="bg-zinc-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-zinc-300 mb-2">2</div>
-            <h3 className="font-medium text-zinc-800 mb-1">Enter your conditions</h3>
-            <p className="text-sm text-zinc-600">
-              Input the air temperature and relative humidity where you&apos;re working.
-            </p>
-          </div>
-          <div className="bg-zinc-50 rounded-lg p-4">
-            <div className="text-2xl font-bold text-zinc-300 mb-2">3</div>
-            <h3 className="font-medium text-zinc-800 mb-1">Get your estimate</h3>
-            <p className="text-sm text-zinc-600">
-              We apply Q10 temperature scaling and material-specific humidity logic from the
-              manufacturer&apos;s TDS.
-            </p>
+      {/* ── How It Works ─────────────────────────────────────── */}
+      <section style={{ backgroundColor: 'var(--bg-surface)', borderTop: '1px solid var(--border-dim)', borderBottom: '1px solid var(--border-dim)' }}>
+        <div className="max-w-5xl mx-auto px-4 py-10">
+          <h2 className="text-xs font-semibold uppercase tracking-widest mb-7" style={{ color: 'var(--gold)' }}>
+            How It Works
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { n: '1', title: 'Find your product',   body: 'Browse by material category and select your specific adhesive or sealant.' },
+              { n: '2', title: 'Enter your conditions', body: 'Input the air temperature and relative humidity where you\'re working.' },
+              { n: '3', title: 'Get your estimate',    body: 'We apply Q10 temperature scaling and material-specific humidity logic from the manufacturer\'s TDS.' },
+            ].map((step) => (
+              <div key={step.n} className="flex gap-4">
+                <div
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5"
+                  style={{ backgroundColor: 'var(--gold-dim)', color: 'var(--gold-bright)' }}
+                >
+                  {step.n}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--cream)' }}>{step.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--cream-muted)' }}>{step.body}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <Disclaimer />
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <Disclaimer />
+      </div>
     </div>
   )
 }

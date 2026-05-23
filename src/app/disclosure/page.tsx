@@ -86,8 +86,8 @@ export default function DisclosurePage() {
           <h2 className="text-xl font-semibold text-zinc-900 mb-2">Contact</h2>
           <p>
             If you have questions about our affiliate relationships, please contact us at{' '}
-            <a href="mailto:taashira.chikosi@gmail.com" className="text-zinc-900 underline">
-              taashira.chikosi@gmail.com
+            <a href="mailto:diycurecalc@outlook.com" className="text-zinc-900 underline">
+              diycurecalc@outlook.com
             </a>
             .
           </p>

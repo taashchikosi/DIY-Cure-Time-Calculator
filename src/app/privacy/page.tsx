@@ -86,8 +86,8 @@ export default function PrivacyPage() {
           </p>
           <p className="mt-2">
             To exercise any of these rights, please contact us at{' '}
-            <a href="mailto:taashira.chikosi@gmail.com" className="text-zinc-900 underline">
-              taashira.chikosi@gmail.com
+            <a href="mailto:diycurecalc@outlook.com" className="text-zinc-900 underline">
+              diycurecalc@outlook.com
             </a>
             . We will respond within 30 days.
           </p>
@@ -114,8 +114,8 @@ export default function PrivacyPage() {
           <h2 className="text-xl font-semibold text-zinc-900 mb-2">8. Contact</h2>
           <p>
             For privacy enquiries, contact:{' '}
-            <a href="mailto:taashira.chikosi@gmail.com" className="text-zinc-900 underline">
-              taashira.chikosi@gmail.com
+            <a href="mailto:diycurecalc@outlook.com" className="text-zinc-900 underline">
+              diycurecalc@outlook.com
             </a>
           </p>
         </section>
