@@ -181,7 +181,43 @@ INSERT INTO products (
  24, 'neutral', 10, 39, 95, NULL,
  true, true, false, false, NULL,
  'https://www.loctiteproducts.com/content/dam/loctite/en-US/documents/tds/tds-loctite-epoxy-weld.pdf',
- '2026-05-22', false, NULL, NULL, NOW())
+ '2026-05-22', false, NULL, NULL, NOW()),
+
+-- 20. Gorilla Wood Glue (PVA; TDS: RS Online c326/A700000006570636; open 5-10 min, clamp 20-30 min, cure 24h, 55–75°F)
+('Gorilla Glue', 'Gorilla Wood Glue', 'adhesive', 'PVA',
+ 'gorilla-wood-glue',
+ 5, 20, NULL, NULL,
+ 24, 'negative', 10, 55, 75, 13,
+ false, false, false, false, NULL,
+ 'https://docs.rs-online.com/c326/A700000006570636.pdf',
+ '2026-05-24', false, NULL, NULL, NOW()),
+
+-- 21. Titebond Original Wood Glue (aliphatic resin; chalk temp 50°F; open 4-6 min, clamp 30 min, cure 24h; no max temp in TDS)
+('Franklin International', 'Titebond Original Wood Glue', 'adhesive', 'aliphatic_resin',
+ 'titebond-original-wood-glue',
+ 4, 30, NULL, NULL,
+ 24, 'negative', 10, 50, NULL, 10,
+ false, false, false, false, NULL,
+ 'https://www.titebond.com/product/glues/d4d28015-603f-4dfc-a7d9-f684acc71207',
+ '2026-05-24', false, NULL, NULL, NOW()),
+
+-- 22. Titebond II Premium Wood Glue (aliphatic resin; chalk temp 55°F; open 3-5 min, clamp 30 min, cure 24h; no max temp in TDS)
+('Franklin International', 'Titebond II Premium Wood Glue', 'adhesive', 'aliphatic_resin',
+ 'titebond-ii-premium-wood-glue',
+ 3, 30, NULL, NULL,
+ 24, 'negative', 10, 55, NULL, 13,
+ false, false, false, false, NULL,
+ 'https://www.titebond.com/product/glues/2ef3e95d-48d2-43bc-8e1b-217a38930fa2',
+ '2026-05-24', false, NULL, NULL, NOW()),
+
+-- 23. Titebond III Ultimate Wood Glue (aliphatic resin; chalk temp 47°F; open 8-10 min, clamp 30 min, cure 24h; no max temp in TDS)
+('Franklin International', 'Titebond III Ultimate Wood Glue', 'adhesive', 'aliphatic_resin',
+ 'titebond-iii-ultimate-wood-glue',
+ 8, 30, NULL, NULL,
+ 24, 'negative', 10, 47, NULL, 8,
+ false, false, false, false, NULL,
+ 'https://www.titebond.com/product/glues/e8d40b45-0ab3-49f7-8a9c-b53970f736af',
+ '2026-05-24', false, NULL, NULL, NOW())
 
 ON CONFLICT (slug) DO UPDATE SET
   manufacturer            = EXCLUDED.manufacturer,

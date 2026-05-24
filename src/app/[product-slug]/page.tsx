@@ -83,7 +83,7 @@ export default async function ProductPage({ params }: Props) {
         {[
           { label: 'Full cure (70°F / 50% RH)', value: `${Number(product.full_cure_hours)}h` },
           { label: 'Min application temp',       value: `${product.min_application_temp_f}°F` },
-          { label: 'Max application temp',       value: `${product.max_application_temp_f}°F` },
+          ...(product.max_application_temp_f != null ? [{ label: 'Max application temp', value: `${product.max_application_temp_f}°F` }] : []),
           ...(product.clamp_time_min    != null ? [{ label: 'Clamp time',    value: `${product.clamp_time_min} min` }]    : []),
           ...(product.open_time_min     != null ? [{ label: 'Open time',     value: `${product.open_time_min} min` }]     : []),
           ...(product.dry_to_touch_min  != null ? [{ label: 'Dry to touch',  value: `${product.dry_to_touch_min} min` }]  : []),

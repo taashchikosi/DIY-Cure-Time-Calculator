@@ -21,7 +21,7 @@ model Product {
   humidity_behaviour     String
   temp_doubling_celsius  Decimal   @default(10)
   min_application_temp_f Int
-  max_application_temp_f Int
+  max_application_temp_f Int?
   mfft_celsius           Decimal?
   amine_blush_risk       Boolean   @default(false)
   dew_point_warning      Boolean   @default(false)

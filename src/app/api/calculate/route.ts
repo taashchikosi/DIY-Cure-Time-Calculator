@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       humidity_behaviour: row.humidity_behaviour as ProductData['humidity_behaviour'],
       temp_doubling_celsius: Number(row.temp_doubling_celsius),
       min_application_temp_f: row.min_application_temp_f,
-      max_application_temp_f: row.max_application_temp_f,
+      max_application_temp_f: row.max_application_temp_f ?? null,
       mfft_celsius: row.mfft_celsius != null ? Number(row.mfft_celsius) : null,
       amine_blush_risk: row.amine_blush_risk,
       dew_point_warning: row.dew_point_warning,

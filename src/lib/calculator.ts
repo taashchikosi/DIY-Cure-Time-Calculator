@@ -5,7 +5,7 @@ export interface ProductData {
   humidity_behaviour: HumidityBehaviour
   temp_doubling_celsius: number
   min_application_temp_f: number
-  max_application_temp_f: number
+  max_application_temp_f: number | null
   mfft_celsius?: number | null
   amine_blush_risk: boolean
   dew_point_warning: boolean
@@ -164,17 +164,15 @@ export function calculate(product: ProductData, input: CalculatorInput): Calcula
     can_apply = false
   }
 
-  if (input.temp_fahrenheit > product.max_application_temp_f) {
+  if (product.max_application_temp_f != null && input.temp_fahrenheit > product.max_application_temp_f) {
     warnings.push({
       level: 'amber',
       message: `Flash-setting or pot-life reduction risk above ${product.max_application_temp_f}°F.`,
     })
   }
 
-  // PVA chalking check
+  // PVA / aliphatic resin chalking check — mfft_celsius set means product has a chalk temperature
   if (
-    product.category === 'wood_glue' &&
-    product.sub_category === 'PVA' &&
     product.mfft_celsius != null &&
     temp_c < product.mfft_celsius
   ) {

@@ -39,7 +39,7 @@ const CATEGORY_DB_WHERE: Record<string, DbWhere> = {
   'silicone-caulk':        { category: 'sealant' },
   'construction-adhesive': {
     category: 'adhesive',
-    sub_category: { in: ['polyurethane', 'PVA', 'PVA_construction', 'contact_cement', 'synthetic_rubber', 'acrylic_latex', 'cyanoacrylate'] },
+    sub_category: { in: ['polyurethane', 'PVA_construction', 'contact_cement', 'synthetic_rubber', 'acrylic_latex', 'cyanoacrylate'] },
   },
   concrete: { category: 'concrete' },
 }
@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: Props) {
     manufacturer: string
     full_cure_hours: unknown
     min_application_temp_f: number
-    max_application_temp_f: number
+    max_application_temp_f: number | null
     sub_category: string | null
     product_image_url: string | null
   }> = []
@@ -153,7 +153,7 @@ export default async function CategoryPage({ params }: Props) {
               </p>
               <div className="flex gap-4 text-xs" style={{ color: 'var(--cream-muted)' }}>
                 <span style={{ color: 'var(--gold)' }}>Full cure: {Number(p.full_cure_hours)}h</span>
-                <span>{p.min_application_temp_f}–{p.max_application_temp_f}°F</span>
+                <span>{p.min_application_temp_f}{p.max_application_temp_f != null ? `–${p.max_application_temp_f}` : '+'}°F</span>
               </div>
             </Link>
           ))}
