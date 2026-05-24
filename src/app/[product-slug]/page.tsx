@@ -1,11 +1,26 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import CalculatorForm from '@/components/CalculatorForm'
 import ProductImage from '@/components/ProductImage'
 
 export const revalidate = 86400
+
+const SUBSTRATES_BY_SUB_CATEGORY: Record<string, string[]> = {
+  PVA:             ['oak', 'pine', 'mdf', 'plywood'],
+  aliphatic_resin: ['oak', 'pine', 'mdf', 'plywood'],
+  epoxy:           ['metal', 'concrete', 'glass', 'oak'],
+  sealant:         ['tile', 'glass', 'drywall', 'metal'],
+  polyurethane:    ['concrete', 'brick', 'drywall', 'metal'],
+  cyanoacrylate:   ['metal', 'glass', 'ceramic', 'plastic'],
+}
+const SUBSTRATE_LABELS: Record<string, string> = {
+  oak: 'Oak', pine: 'Pine', mdf: 'MDF', plywood: 'Plywood', metal: 'Metal',
+  concrete: 'Concrete', glass: 'Glass', tile: 'Tile', drywall: 'Drywall',
+  ceramic: 'Ceramic', plastic: 'Plastic', brick: 'Brick',
+}
 
 interface Props {
   params: Promise<{ 'product-slug': string }>
@@ -16,6 +31,23 @@ async function getProduct(slug: string) {
     return await prisma.product.findUnique({ where: { slug } })
   } catch {
     return null
+  }
+}
+
+async function getSiblings(slug: string, category: string, subCategory: string | null) {
+  try {
+    return await prisma.product.findMany({
+      where: {
+        slug: { not: slug },
+        category,
+        ...(subCategory ? { sub_category: subCategory } : {}),
+        verified_by_human: true,
+      },
+      select: { slug: true, product_name: true },
+      take: 4,
+    })
+  } catch {
+    return []
   }
 }
 
@@ -34,9 +66,13 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(slug)
   if (!product) notFound()
 
+  const siblings = await getSiblings(slug, product.category, product.sub_category)
+
   const categoryLabel = product.category
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c: string) => c.toUpperCase())
+
+  const substrateLinks = (SUBSTRATES_BY_SUB_CATEGORY[product.sub_category ?? ''] ?? SUBSTRATES_BY_SUB_CATEGORY[product.category] ?? []).slice(0, 4)
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
@@ -130,6 +166,48 @@ export default async function ProductPage({ params }: Props) {
       <div className="mb-8">
         <CalculatorForm productSlug={slug} />
       </div>
+
+      {/* Use-case quick links */}
+      {substrateLinks.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--cream-muted)' }}>
+            Application guides
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {substrateLinks.map((s) => (
+              <Link
+                key={s}
+                href={`/${slug}/on-${s}`}
+                className="text-xs px-3 py-1.5 rounded transition-colors hover:border-[--gold-dim]"
+                style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}
+              >
+                on {SUBSTRATE_LABELS[s] ?? s}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Compare with sibling products */}
+      {siblings.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--cream-muted)' }}>
+            Compare with similar products
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {siblings.map((s) => (
+              <Link
+                key={s.slug}
+                href={`/compare/${slug}-vs-${s.slug}`}
+                className="text-xs px-3 py-1.5 rounded transition-colors hover:border-[--gold-dim]"
+                style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}
+              >
+                vs {s.product_name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* TDS link */}
       <div className="mb-6 text-sm rounded-lg px-4 py-3" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}>

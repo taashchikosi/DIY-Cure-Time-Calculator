@@ -27,15 +27,30 @@ export default async function HomePage() {
     manufacturer: string
     full_cure_hours: unknown
     category: string
+    sub_category: string | null
   }> = []
 
   try {
     products = await prisma.product.findMany({
-      select: { id: true, slug: true, product_name: true, manufacturer: true, full_cure_hours: true, category: true },
+      where: { verified_by_human: true },
+      select: { id: true, slug: true, product_name: true, manufacturer: true, full_cure_hours: true, category: true, sub_category: true },
       orderBy: [{ manufacturer: 'asc' }, { product_name: 'asc' }],
     })
   } catch {
     products = []
+  }
+
+  // Build same-category compare pairs (max 6 for display)
+  const comparePairs: Array<{ slug: string; label: string }> = []
+  for (let i = 0; i < products.length && comparePairs.length < 6; i++) {
+    for (let j = i + 1; j < products.length && comparePairs.length < 6; j++) {
+      if (products[i].sub_category === products[j].sub_category && products[i].sub_category !== null) {
+        comparePairs.push({
+          slug: `${products[i].slug}-vs-${products[j].slug}`,
+          label: `${products[i].product_name} vs ${products[j].product_name}`,
+        })
+      }
+    }
   }
 
   return (
@@ -146,6 +161,30 @@ export default async function HomePage() {
                   </span>
                   <p className="text-xs" style={{ color: 'var(--cream-dim)' }}>full cure</p>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Popular Comparisons ──────────────────────────────── */}
+      {comparePairs.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 pb-10">
+          <h2 className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: 'var(--gold)' }}>
+            Popular Comparisons
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {comparePairs.map((pair) => (
+              <Link
+                key={pair.slug}
+                href={`/compare/${pair.slug}`}
+                className="card-hover group rounded-lg p-4 transition-all hover:scale-[1.01]"
+                style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)' }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--gold)' }}>Compare</p>
+                <p className="text-sm font-semibold leading-snug group-hover:text-[--gold-bright] transition-colors" style={{ color: 'var(--cream)' }}>
+                  {pair.label}
+                </p>
               </Link>
             ))}
           </div>
