@@ -1,11 +1,27 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import CalculatorForm from '@/components/CalculatorForm'
 import ProductImage from '@/components/ProductImage'
+import { productPageSD } from '@/lib/structured-data'
 
 export const revalidate = 86400
+
+const SUBSTRATES_BY_SUB_CATEGORY: Record<string, string[]> = {
+  PVA:             ['oak', 'pine', 'mdf', 'plywood'],
+  aliphatic_resin: ['oak', 'pine', 'mdf', 'plywood'],
+  epoxy:           ['metal', 'concrete', 'glass', 'oak'],
+  sealant:         ['tile', 'glass', 'drywall', 'metal'],
+  polyurethane:    ['concrete', 'brick', 'drywall', 'metal'],
+  cyanoacrylate:   ['metal', 'glass', 'ceramic', 'plastic'],
+}
+const SUBSTRATE_LABELS: Record<string, string> = {
+  oak: 'Oak', pine: 'Pine', mdf: 'MDF', plywood: 'Plywood', metal: 'Metal',
+  concrete: 'Concrete', glass: 'Glass', tile: 'Tile', drywall: 'Drywall',
+  ceramic: 'Ceramic', plastic: 'Plastic', brick: 'Brick',
+}
 
 interface Props {
   params: Promise<{ 'product-slug': string }>
@@ -19,13 +35,37 @@ async function getProduct(slug: string) {
   }
 }
 
+async function getSiblings(slug: string, category: string, subCategory: string | null) {
+  try {
+    return await prisma.product.findMany({
+      where: {
+        slug: { not: slug },
+        category,
+        ...(subCategory ? { sub_category: subCategory } : {}),
+        verified_by_human: true,
+      },
+      select: { slug: true, product_name: true },
+      take: 4,
+    })
+  } catch {
+    return []
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { 'product-slug': slug } = await params
   const product = await getProduct(slug)
   if (!product) return { title: 'Product Not Found' }
   return {
     title: `${product.product_name} Cure Time Calculator`,
-    description: `How long does ${product.product_name} by ${product.manufacturer} take to cure? Get an estimate adjusted for your temperature and humidity.`,
+    description: `How long does ${product.product_name} by ${product.manufacturer} take to cure? Temperature and humidity-adjusted estimates with safety warnings. Data sourced from the manufacturer's TDS.`,
+    alternates: { canonical: `https://diycuretimecalculator.com/${slug}` },
+    openGraph: {
+      title: `${product.product_name} Cure Time Calculator`,
+      description: `Cure time for ${product.product_name} adjusted for your actual temperature and humidity.`,
+      url: `https://diycuretimecalculator.com/${slug}`,
+      type: 'website',
+    },
   }
 }
 
@@ -34,11 +74,35 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(slug)
   if (!product) notFound()
 
+  const siblings = await getSiblings(slug, product.category, product.sub_category)
+
   const categoryLabel = product.category
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c: string) => c.toUpperCase())
 
+  const substrateLinks = (SUBSTRATES_BY_SUB_CATEGORY[product.sub_category ?? ''] ?? SUBSTRATES_BY_SUB_CATEGORY[product.category] ?? []).slice(0, 4)
+
+  const sd = productPageSD({
+    product_name: product.product_name,
+    manufacturer: product.manufacturer,
+    slug: product.slug,
+    category: product.category,
+    sub_category: product.sub_category,
+    full_cure_hours: product.full_cure_hours,
+    min_application_temp_f: product.min_application_temp_f,
+    max_application_temp_f: product.max_application_temp_f,
+    open_time_min: product.open_time_min,
+    clamp_time_min: product.clamp_time_min,
+    humidity_behaviour: product.humidity_behaviour,
+    mfft_celsius: product.mfft_celsius,
+    amine_blush_risk: product.amine_blush_risk,
+    structural_liability: product.structural_liability,
+    silicone_bell_curve: product.silicone_bell_curve,
+  })
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sd) }} />
     <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
 
       {/* Breadcrumb */}
@@ -131,6 +195,48 @@ export default async function ProductPage({ params }: Props) {
         <CalculatorForm productSlug={slug} />
       </div>
 
+      {/* Use-case quick links */}
+      {substrateLinks.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--cream-muted)' }}>
+            Application guides
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {substrateLinks.map((s) => (
+              <Link
+                key={s}
+                href={`/${slug}/on-${s}`}
+                className="text-xs px-3 py-1.5 rounded transition-colors hover:border-[--gold-dim]"
+                style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}
+              >
+                on {SUBSTRATE_LABELS[s] ?? s}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Compare with sibling products */}
+      {siblings.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--cream-muted)' }}>
+            Compare with similar products
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {siblings.map((s) => (
+              <Link
+                key={s.slug}
+                href={`/compare/${slug}-vs-${s.slug}`}
+                className="text-xs px-3 py-1.5 rounded transition-colors hover:border-[--gold-dim]"
+                style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}
+              >
+                vs {s.product_name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* TDS link */}
       <div className="mb-6 text-sm rounded-lg px-4 py-3" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-dim)', color: 'var(--cream-muted)' }}>
         Data sourced from{' '}
@@ -149,5 +255,6 @@ export default async function ProductPage({ params }: Props) {
 
       <Disclaimer />
     </div>
+    </>
   )
 }

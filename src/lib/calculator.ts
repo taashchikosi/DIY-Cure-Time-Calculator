@@ -104,19 +104,23 @@ export function getHumidityFactor(
     }
 
     case 'bell_curve': {
-      // Silicone caulk — optimal 40-60% RH
+      // Silicone caulk cures by reaction with atmospheric moisture.
+      // Optimal range: 30–65% RH. Stalls at <30%; premature skin-over at >70%.
+      // Factor is continuous: smooth linear ramp from 1.0 at 65% to ~1.30 at 100%.
       if (humidity_rh < 30) {
         return {
           factor: 2.0,
           warning: { level: 'red', message: 'Cure will stall — humidity too low for silicone.' },
         }
       }
-      if (humidity_rh <= 60) {
+      if (humidity_rh <= 65) {
         return { factor: 1.0, warning: null }
       }
+      // Smooth ramp: +0.0085 per 1% RH above 65% (≈30% slower at 100% RH)
+      const factor = 1.0 + (humidity_rh - 65) * 0.0085
       if (humidity_rh > 70) {
         return {
-          factor: 1.2,
+          factor,
           warning: {
             level: 'amber',
             message:
@@ -124,7 +128,7 @@ export function getHumidityFactor(
           },
         }
       }
-      return { factor: 1.0, warning: null }
+      return { factor, warning: null }
     }
 
     case 'neutral': {

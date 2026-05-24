@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import ProductImage from '@/components/ProductImage'
+import { categorySD } from '@/lib/structured-data'
 
 export const revalidate = 86400
 
@@ -52,9 +53,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const label = VALID_CATEGORIES[slug]
   if (!label) return { title: 'Category Not Found' }
+  const canonical = `https://diycuretimecalculator.com/category/${slug}`
   return {
     title: `${label} Cure Time Calculator`,
-    description: CATEGORY_DESCRIPTIONS[slug] ?? `Cure time calculators for ${label} products.`,
+    description: CATEGORY_DESCRIPTIONS[slug] ?? `Cure time calculators for ${label} products, adjusted for your temperature and humidity.`,
+    alternates: { canonical },
+    openGraph: { url: canonical, type: 'website' },
   }
 }
 
@@ -93,7 +97,11 @@ export default async function CategoryPage({ params }: Props) {
     products = []
   }
 
+  const sd = categorySD(label, slug, description)
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sd) }} />
     <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
 
       {/* Breadcrumb */}
@@ -164,5 +172,6 @@ export default async function CategoryPage({ params }: Props) {
         <Disclaimer />
       </div>
     </div>
+    </>
   )
 }
