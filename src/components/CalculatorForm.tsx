@@ -116,7 +116,7 @@ export default function CalculatorForm({ productSlug }: Props) {
           {/* Temperature slider */}
           <div>
             <div className="flex justify-between items-baseline mb-3">
-              <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--cream-muted)' }}>
+              <label htmlFor="calc-temp" className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--cream-muted)' }}>
                 Air Temperature
               </label>
               <span className="text-2xl font-black" style={{ color: 'var(--gold-bright)' }}>
@@ -124,12 +124,15 @@ export default function CalculatorForm({ productSlug }: Props) {
               </span>
             </div>
             <input
+              id="calc-temp"
               type="range"
               className="temp-slider"
               min="10"
               max="120"
               step="1"
               value={tempF}
+              aria-label="Air temperature in Fahrenheit"
+              aria-valuetext={`${tempF} degrees Fahrenheit`}
               onChange={(e) => setTempF(Number(e.target.value))}
             />
             <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--cream-dim)' }}>
@@ -141,7 +144,7 @@ export default function CalculatorForm({ productSlug }: Props) {
           {/* Humidity slider */}
           <div>
             <div className="flex justify-between items-baseline mb-3">
-              <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--cream-muted)' }}>
+              <label htmlFor="calc-humidity" className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--cream-muted)' }}>
                 Relative Humidity
               </label>
               <span className="text-2xl font-black" style={{ color: 'var(--gold-bright)' }}>
@@ -149,12 +152,15 @@ export default function CalculatorForm({ productSlug }: Props) {
               </span>
             </div>
             <input
+              id="calc-humidity"
               type="range"
               className="humidity-slider"
               min="0"
               max="100"
               step="1"
               value={humidity}
+              aria-label="Relative humidity percentage"
+              aria-valuetext={`${humidity} percent`}
               onChange={(e) => setHumidity(Number(e.target.value))}
             />
             <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--cream-dim)' }}>

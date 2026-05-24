@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 interface Props {
   imageUrl?: string | null
   productName: string
@@ -6,7 +8,6 @@ interface Props {
   size?: 'sm' | 'md' | 'lg'
 }
 
-// Category-specific accent colors
 const CATEGORY_STYLES: Record<string, { bg: string; color: string; icon: string }> = {
   adhesive: { bg: 'linear-gradient(135deg, #2c1a08 0%, #3d2410 100%)', color: '#e8b446', icon: '🔧' },
   sealant:  { bg: 'linear-gradient(135deg, #0a1a2c 0%, #0f2040 100%)', color: '#60a5fa', icon: '🚿' },
@@ -19,27 +20,37 @@ const SUB_CATEGORY_ICONS: Record<string, string> = {
   cyanoacrylate: '⚡', concrete: '🧱',
 }
 
+const SIZE_H: Record<string, string> = { sm: 'h-16', md: 'h-28', lg: 'h-40' }
+const ICON_SIZE: Record<string, string> = { sm: 'text-2xl', md: 'text-4xl', lg: 'text-5xl' }
+
 export default function ProductImage({ imageUrl, productName, category, subCategory, size = 'md' }: Props) {
-  const sizeClasses = { sm: 'h-16', md: 'h-28', lg: 'h-40' }
-  const iconSize = { sm: 'text-2xl', md: 'text-4xl', lg: 'text-5xl' }
   const style = CATEGORY_STYLES[category] ?? CATEGORY_STYLES.adhesive
   const icon = (subCategory && SUB_CATEGORY_ICONS[subCategory]) ?? style.icon
 
   if (imageUrl) {
     return (
-      <div className={`w-full ${sizeClasses[size]} rounded-lg overflow-hidden`} style={{ border: '1px solid var(--border-dim)' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imageUrl} alt={productName} className="w-full h-full object-contain p-2" style={{ backgroundColor: 'var(--bg-card)' }} />
+      <div
+        className={`w-full ${SIZE_H[size]} rounded-lg overflow-hidden relative`}
+        style={{ border: '1px solid var(--border-dim)', backgroundColor: 'var(--bg-card)' }}
+      >
+        <Image
+          src={imageUrl}
+          alt={productName}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-contain p-2"
+          unoptimized={imageUrl.startsWith('http')}
+        />
       </div>
     )
   }
 
   return (
     <div
-      className={`w-full ${sizeClasses[size]} rounded-lg flex flex-col items-center justify-center gap-1`}
+      className={`w-full ${SIZE_H[size]} rounded-lg flex flex-col items-center justify-center gap-1`}
       style={{ background: style.bg, border: '1px solid var(--border-dim)' }}
     >
-      <span className={iconSize[size]}>{icon}</span>
+      <span className={ICON_SIZE[size]}>{icon}</span>
       <span className="text-xs font-medium text-center px-2 leading-tight" style={{ color: style.color }}>
         {category.replace(/_/g, ' ')}
       </span>

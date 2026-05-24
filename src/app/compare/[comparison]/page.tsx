@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import CompareCalculatorForm from '@/components/CompareCalculatorForm'
+import { compareSD } from '@/lib/structured-data'
 
 export const revalidate = 86400
 
@@ -38,9 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!parsed) return { title: 'Comparison Not Found' }
   const [p1, p2] = await getProducts(parsed[0], parsed[1])
   if (!p1 || !p2) return { title: 'Comparison Not Found' }
+  const canonical = `https://diycuretimecalculator.com/compare/${comparison}`
   return {
     title: `${p1.product_name} vs ${p2.product_name} — Cure Time Comparison`,
-    description: `Compare ${p1.product_name} and ${p2.product_name} side-by-side. See how temperature and humidity affect cure time for each product at your actual conditions.`,
+    description: `Compare ${p1.product_name} and ${p2.product_name} side-by-side with our cure time calculator. See how temperature and humidity affect each product at your actual conditions.`,
+    alternates: { canonical },
+    openGraph: { url: canonical, type: 'website' },
   }
 }
 
@@ -95,8 +99,11 @@ export default async function ComparePage({ params }: Props) {
   }
 
   const sameCategory = p1.category === p2.category && p1.sub_category === p2.sub_category
+  const sd = compareSD(p1, p2, comparison)
 
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sd) }} />
     <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
 
       {/* Breadcrumb */}
@@ -290,5 +297,6 @@ export default async function ComparePage({ params }: Props) {
 
       <Disclaimer />
     </div>
+    </>
   )
 }

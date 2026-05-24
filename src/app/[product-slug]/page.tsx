@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import Disclaimer from '@/components/Disclaimer'
 import CalculatorForm from '@/components/CalculatorForm'
 import ProductImage from '@/components/ProductImage'
+import { productPageSD } from '@/lib/structured-data'
 
 export const revalidate = 86400
 
@@ -57,7 +58,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return { title: 'Product Not Found' }
   return {
     title: `${product.product_name} Cure Time Calculator`,
-    description: `How long does ${product.product_name} by ${product.manufacturer} take to cure? Get an estimate adjusted for your temperature and humidity.`,
+    description: `How long does ${product.product_name} by ${product.manufacturer} take to cure? Temperature and humidity-adjusted estimates with safety warnings. Data sourced from the manufacturer's TDS.`,
+    alternates: { canonical: `https://diycuretimecalculator.com/${slug}` },
+    openGraph: {
+      title: `${product.product_name} Cure Time Calculator`,
+      description: `Cure time for ${product.product_name} adjusted for your actual temperature and humidity.`,
+      url: `https://diycuretimecalculator.com/${slug}`,
+      type: 'website',
+    },
   }
 }
 
@@ -74,7 +82,27 @@ export default async function ProductPage({ params }: Props) {
 
   const substrateLinks = (SUBSTRATES_BY_SUB_CATEGORY[product.sub_category ?? ''] ?? SUBSTRATES_BY_SUB_CATEGORY[product.category] ?? []).slice(0, 4)
 
+  const sd = productPageSD({
+    product_name: product.product_name,
+    manufacturer: product.manufacturer,
+    slug: product.slug,
+    category: product.category,
+    sub_category: product.sub_category,
+    full_cure_hours: product.full_cure_hours,
+    min_application_temp_f: product.min_application_temp_f,
+    max_application_temp_f: product.max_application_temp_f,
+    open_time_min: product.open_time_min,
+    clamp_time_min: product.clamp_time_min,
+    humidity_behaviour: product.humidity_behaviour,
+    mfft_celsius: product.mfft_celsius,
+    amine_blush_risk: product.amine_blush_risk,
+    structural_liability: product.structural_liability,
+    silicone_bell_curve: product.silicone_bell_curve,
+  })
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sd) }} />
     <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
 
       {/* Breadcrumb */}
@@ -227,5 +255,6 @@ export default async function ProductPage({ params }: Props) {
 
       <Disclaimer />
     </div>
+    </>
   )
 }

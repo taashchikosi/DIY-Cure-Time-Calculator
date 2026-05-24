@@ -178,8 +178,12 @@ export default function CompareCalculatorForm({ slug1, name1, slug2, name2 }: Pr
               <span className="text-2xl font-black" style={{ color: 'var(--gold-bright)' }}>{tempF}°F</span>
             </div>
             <input
+              id="compare-temp"
               type="range" className="temp-slider" min="10" max="120" step="1"
-              value={tempF} onChange={(e) => setTempF(Number(e.target.value))}
+              value={tempF}
+              aria-label="Air temperature in Fahrenheit"
+              aria-valuetext={`${tempF} degrees Fahrenheit`}
+              onChange={(e) => setTempF(Number(e.target.value))}
             />
             <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--cream-dim)' }}>
               <span>10°F</span><span>120°F</span>
@@ -194,8 +198,12 @@ export default function CompareCalculatorForm({ slug1, name1, slug2, name2 }: Pr
               <span className="text-2xl font-black" style={{ color: 'var(--gold-bright)' }}>{humidity}%</span>
             </div>
             <input
+              id="compare-humidity"
               type="range" className="humidity-slider" min="0" max="100" step="1"
-              value={humidity} onChange={(e) => setHumidity(Number(e.target.value))}
+              value={humidity}
+              aria-label="Relative humidity percentage"
+              aria-valuetext={`${humidity} percent`}
+              onChange={(e) => setHumidity(Number(e.target.value))}
             />
             <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--cream-dim)' }}>
               <span>0%</span><span>100%</span>
