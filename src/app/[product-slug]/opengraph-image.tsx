@@ -14,7 +14,7 @@ export default async function ProductOGImage({ params }: Props) {
   const { 'product-slug': slug } = await params
 
   let productName = 'DIY Cure Time Calculator'
-  let manufacturer = ''
+  let manufacturer = 'Cure Time Estimator'
   let fullCureH = ''
   let minTempF = ''
 
@@ -51,25 +51,19 @@ export default async function ProductOGImage({ params }: Props) {
         {productName}
       </div>
 
-      {manufacturer && (
-        <div style={{ fontSize: '28px', color: '#a07a50', marginBottom: '40px' }}>
-          {manufacturer}
-        </div>
-      )}
+      <div style={{ fontSize: '28px', color: '#a07a50', marginBottom: '40px' }}>
+        {manufacturer}
+      </div>
 
       <div style={{ display: 'flex', gap: '56px', marginBottom: 'auto' }}>
-        {fullCureH && (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ fontSize: '48px', fontWeight: 800, color: '#e8b446' }}>{fullCureH}</div>
-            <div style={{ fontSize: '18px', color: '#7a5218' }}>full cure at 70°F / 50% RH</div>
-          </div>
-        )}
-        {minTempF && (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ fontSize: '48px', fontWeight: 800, color: '#c8892a' }}>{minTempF}</div>
-            <div style={{ fontSize: '18px', color: '#7a5218' }}>minimum application temp</div>
-          </div>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ fontSize: '48px', fontWeight: 800, color: '#e8b446' }}>{fullCureH || '—'}</div>
+          <div style={{ fontSize: '18px', color: '#7a5218' }}>full cure at 70°F / 50% RH</div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ fontSize: '48px', fontWeight: 800, color: '#c8892a' }}>{minTempF || '—'}</div>
+          <div style={{ fontSize: '18px', color: '#7a5218' }}>minimum application temp</div>
+        </div>
       </div>
 
       <div

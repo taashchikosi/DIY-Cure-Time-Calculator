@@ -19,25 +19,31 @@ export default function OGImage() {
       }}
     >
       <div style={{ width: '80px', height: '5px', backgroundColor: '#e8b446', marginBottom: '36px' }} />
-      <div style={{ fontSize: '72px', fontWeight: 900, color: '#f0e2c0', lineHeight: 1.05, marginBottom: '20px' }}>
-        Know Exactly<br />
-        <span style={{ color: '#e8b446' }}>When It&apos;s Ready.</span>
+
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+        <div style={{ fontSize: '72px', fontWeight: 900, color: '#f0e2c0', lineHeight: 1.05 }}>
+          Know Exactly
+        </div>
+        <div style={{ fontSize: '72px', fontWeight: 900, color: '#e8b446', lineHeight: 1.05 }}>
+          When It&apos;s Ready.
+        </div>
       </div>
+
       <div style={{ fontSize: '26px', color: '#a07a50', marginBottom: '48px', maxWidth: '800px', lineHeight: 1.4 }}>
-        Cure times for wood glue, epoxy, silicone, construction adhesive & concrete —
-        adjusted for your actual temperature and humidity.
+        Cure times for wood glue, epoxy, silicone, construction adhesive & concrete — adjusted for your actual temperature and humidity.
       </div>
-      <div style={{ display: 'flex', gap: '48px' }}>
-        {['🌡️ Q10 Temperature Scaling', '💧 Humidity Branches', '⛔ Safety Warnings'].map((f) => (
-          <div key={f} style={{ fontSize: '20px', color: '#7a5218' }}>{f}</div>
-        ))}
+
+      <div style={{ display: 'flex', gap: '48px', marginBottom: 'auto' }}>
+        <div style={{ fontSize: '20px', color: '#7a5218' }}>Temperature Scaling</div>
+        <div style={{ fontSize: '20px', color: '#7a5218' }}>Humidity Branches</div>
+        <div style={{ fontSize: '20px', color: '#7a5218' }}>Safety Warnings</div>
       </div>
+
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: '14px',
-          marginTop: 'auto',
           paddingTop: '32px',
           borderTop: '1px solid #3a2810',
         }}
