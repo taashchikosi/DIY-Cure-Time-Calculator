@@ -11,6 +11,17 @@ export async function GET() {
   checks.UPSTASH_REDIS_REST_URL   = process.env.UPSTASH_REDIS_REST_URL   ? 'set' : 'MISSING'
   checks.UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN ? 'set' : 'MISSING'
 
+  // Show parsed host/port so we can confirm pg is connecting to the right place
+  if (process.env.DATABASE_URL) {
+    try {
+      const url = new URL(process.env.DATABASE_URL)
+      checks.db_host = url.hostname
+      checks.db_port = url.port
+    } catch {
+      checks.db_url_parse = 'FAILED — DATABASE_URL is not a valid URL'
+    }
+  }
+
   // DB connectivity
   try {
     const db = getDb()
